@@ -18,8 +18,16 @@ def downloadVideo():
 
 def downloadAudio():
     print("audio download")
+    try:
+        ytLink = link.get()
+        ytObject = YouTube(ytLink)
+        audio = ytObject.streams.get_audio_only()
 
-yt = YouTube('https://www.youtube.com/watch?v=SrgTTjPF6gA')
+        audio.download()
+        finishLabel.configure(text="Download Complete", text_color="green")
+    except:
+        finishLabel.configure(text="Download Failed", text_color="red")
+
 
 #Systems Settings
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
