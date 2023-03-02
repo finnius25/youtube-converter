@@ -2,22 +2,51 @@ import tkinter
 import customtkinter
 from pytube import YouTube
 
-yt = YouTube('https://www.youtube.com/watch?v=SrgTTjPF6gA')
-print(yt.title)
 
+def downloadVideo():
+    print("video download")
+    try:
+        ytLink = link.get()
+        ytObject = YouTube(ytLink)
+        video = ytObject.streams.get_highest_resolution()
+
+        video.download()
+        finishLabel.configure(text="Download Complete", text_color="green")
+    except:
+        finishLabel.configure(text="Download Failed", text_color="red")
+
+
+def downloadAudio():
+    print("audio download")
+
+yt = YouTube('https://www.youtube.com/watch?v=SrgTTjPF6gA')
+
+#Systems Settings
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 
-app = customtkinter.CTk()  # create CTk window like you do with the Tk window
-app.geometry("400x240")
+#Create Window
+app = customtkinter.CTk() 
+app.geometry("720x480")
+app.title("Youtube Converter")
 
 
-def button_function():
-    print("button pressed")
+title = customtkinter.CTkLabel(app, text="Insert a youtube link")
+title.pack(padx=10, pady=10)
 
 
-# Use CTkButton instead of tkinter Button
-button = customtkinter.CTkButton(master=app, text="CTkButton", command=button_function)
-button.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+url_var = tkinter.StringVar()
+link = customtkinter.CTkEntry(app, width=350, height=40, textvariable=url_var)
+link.pack()
+
+finishLabel = customtkinter.CTkLabel(app, text="")
+finishLabel.pack()
+
+downloadAudio = customtkinter.CTkButton(app, text='Download Audio', command=downloadAudio)
+downloadAudio.pack(padx=10, pady=10)
+
+
+downloadVideo = customtkinter.CTkButton(app, text='Download Video', command=downloadVideo)
+downloadVideo.pack(padx=10, pady=10)
 
 app.mainloop()
